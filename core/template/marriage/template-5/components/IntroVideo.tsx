@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const INTRO_VIDEO = 'https://res.cloudinary.com/dwbed0m72/video/upload/v1773643818/intro-envelope-HFQPjaLP_ocpflr.mp4';
+const INTRO_VIDEO = 'https://res.cloudinary.com/dwbed0m72/video/upload/v1773860238/intro-video-new-XmwQeafK_cgyt3j.mp4';
 
 interface IntroVideoProps {
   onComplete: () => void;
