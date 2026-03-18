@@ -1,0 +1,66 @@
+import React, { createContext, useContext } from 'react';
+import type { ReactNode } from "react";
+import { useGetTemplateData } from '@/core/hooks/useGetTemplateData';
+
+// import { GenericLoader } from '../components/LoadingScreen';
+import { DEFAULT_INVITATION_DATA } from '@/core/assets/utils';
+import type { PreviewContextType, PreviewData } from '@/core/context/PreviewContextModel';
+import type { InvitationData } from '@/core/hooks/getTemplateDataModel';
+
+
+
+const PreviewContext = createContext< PreviewContextType | undefined>(undefined);
+
+interface PreviewProviderProps {
+  children: ReactNode;
+  initialData?: PreviewData | InvitationData;
+  theme?: 'birthday' | 'wedding' | 'default';
+  public_id?:string;
+  template_id?:string;
+}
+
+export const PreviewProvider: React.FC<PreviewProviderProps> = ({ children }) => {
+  
+  const { previewData: templateData } = useGetTemplateData();
+  const safePreviewData: InvitationData = (templateData as InvitationData) || DEFAULT_INVITATION_DATA;
+  
+  
+  // const invitation = (safePreviewData as any).invitation || safePreviewData;
+  // const dynamicTheme = theme || (invitation?.invitation_type === 'birthday' ? 'birthday' : 'wedding');
+  
+  // Helper function to extract string value from either direct string or SectionResponse
+  // const extractString = (value: any): string => {
+  //   if (!value) return '';
+  //   if (typeof value === 'string') return value;
+  //   if (typeof value.data === 'string') return value.data;
+  //   return '';
+  // };
+  
+  // Extract metadata from invitation data
+  
+  // Get public_id or slug from URL
+  // const pathParts = window.location.pathname.split('/');
+
+  
+  // Update metadata dynamically
+
+  
+  // if (isLoading) {
+  //   return <GenericLoader theme={dynamicTheme} />;
+  // }
+  
+  return (
+    <PreviewContext.Provider value={{ previewData: safePreviewData, isLoading: false }}>
+      {children}
+    </PreviewContext.Provider>
+  );
+};
+
+export const usePreview = (): PreviewContextType => {
+  const context = useContext(PreviewContext);
+  
+  if (!context) {
+    throw new Error('usePreview must be used within a PreviewProvider');
+  }
+  return context;
+};
