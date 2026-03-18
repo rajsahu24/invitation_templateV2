@@ -21,7 +21,7 @@ interface PreviewProviderProps {
 
 export const PreviewProvider: React.FC<PreviewProviderProps> = ({ children }) => {
   
-  const { previewData: templateData } = useGetTemplateData();
+  const { previewData: templateData, isLoading } = useGetTemplateData();
   const safePreviewData: InvitationData = (templateData as InvitationData) || DEFAULT_INVITATION_DATA;
   
   
@@ -50,7 +50,7 @@ export const PreviewProvider: React.FC<PreviewProviderProps> = ({ children }) =>
   // }
   
   return (
-    <PreviewContext.Provider value={{ previewData: safePreviewData, isLoading: false }}>
+    <PreviewContext.Provider value={{ previewData: safePreviewData, isLoading }}>
       {children}
     </PreviewContext.Provider>
   );

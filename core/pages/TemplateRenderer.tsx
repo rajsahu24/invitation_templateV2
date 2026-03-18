@@ -90,8 +90,7 @@ function TemplateContent() {
     id = firstSegment;
   }
   
-  const { previewData } = usePreview();
-  console.log(previewData)
+  const { previewData, isLoading } = usePreview();
   const invitation = previewData;
   const urlTemplateName = templateName?.replace(/_/g, " ");
   
@@ -142,6 +141,15 @@ function TemplateContent() {
 
   const Template = categoryTemplates[foundTemplateKey];
   
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-stone-50">
+        {/* <div className="w-10 h-10 border-4 border-stone-300 border-t-stone-200 rounded-full animate-spin" /> */}
+        <div className="text-stone-500">Loading Template...</div>
+      </div>
+    );
+  }
+
   if (!Template) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-stone-50 p-4 text-center">
