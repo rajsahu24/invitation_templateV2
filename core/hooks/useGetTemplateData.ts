@@ -124,18 +124,12 @@ export const useGetTemplateData = () => {
         const { id, type } = getIdFromPath(window.location.pathname);
         console.log('Hook initialized. URL context:', { id, type });
 
-        if (type === 'slug' && id) {
-           fetchInvitationBySlug(id);
-        } else if (type === 'rsvp' && id) {
+        if (type === 'rsvp' && id) {
             fetchGuestInvitationData(id);
         } else if (type === 'public' && id) {
             fetchInvitationDetails(id);
         } else if (type === 'slug' && id) {
-            console.log("slug...",id)
             fetchInvitationBySlug(id);
-        } else if (type === 'slug' && id) {
-            
-            fetchTemplateData(id);
         } else if (!id) {
             setPreviewData([]);
             setIsLoading(false);
