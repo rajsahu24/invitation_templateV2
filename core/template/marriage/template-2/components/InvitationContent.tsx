@@ -46,7 +46,7 @@ export function InvitationContent() {
 
   if (schema?.fields) {
     const findField = (keywords: string[]) => 
-      schema.fields.find((f: any) => keywords.some(k => f.key.toLowerCase().includes(k)));
+      schema.fields.find((f: any) => keywords.some(k => f.key.toLowerCase()?.includes(k)));
 
     const brideField = findField(['bride']);
     const groomField = findField(['groom']);

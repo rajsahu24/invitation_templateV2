@@ -16,6 +16,7 @@ import HoliTemolateT1 from '@/core/template/holi/template-1'
 import HoliTemolateT2 from '@/core/template/holi/template-2'
 import BirthdayWisht1 from '@/core/template/birthday-wish/template-1'
 import MarriageTemplate5 from "@/core/template/marriage/template-5";
+import MarriageTemplate6 from "@/core/template/marriage/template-6";
 
 const TEMPLATE_MAP: Record<string, Record<string, React.ComponentType>> = {
   Wedding: {
@@ -23,7 +24,8 @@ const TEMPLATE_MAP: Record<string, Record<string, React.ComponentType>> = {
     "modern wedding": MarriageTemplate2,
     "culture wedding": MarriageTemplate3,
     "botanical garden": MarriageTemplate4,
-    "legante":MarriageTemplate5
+    "legante":MarriageTemplate5,
+    "elegant":MarriageTemplate6,
   },
   Birthday: {
     "birthday celebration": BirthdayT1

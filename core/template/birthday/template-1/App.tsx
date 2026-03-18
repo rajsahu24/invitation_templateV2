@@ -94,7 +94,7 @@ export default function App() {
   if (heroData && typeof heroData === 'object') {
     if (heroSchema?.fields) {
       const findField = (keywords: string[]) => 
-        heroSchema.fields.find((f: any) => keywords.some(k => f.key.toLowerCase().includes(k)));
+        heroSchema.fields.find((f: any) => keywords.some(k => f.key.toLowerCase()?.includes(k)));
       
       const nameField = findField(['celebrant', 'name']);
      

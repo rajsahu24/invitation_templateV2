@@ -16,7 +16,7 @@ export function Footer() {
   if (data && typeof data === 'object') {
     if (schema?.fields) {
       const findField = (keywords: string[]) =>
-        schema.fields.find((f: any) => keywords.some((k: string) => f.key.toLowerCase().includes(k)));
+        schema.fields.find((f: any) => keywords.some((k: string) => f.key.toLowerCase()?.includes(k)));
       brideName = getFieldValue(findField(['bride'])?.key || '');
       groomName = getFieldValue(findField(['groom'])?.key || '');
       const dateVal = getFieldValue(findField(['date'])?.key || '');

@@ -28,7 +28,7 @@ export function HeroSection() {
   if (data && typeof data === 'object') {
     if (schema?.fields) {
       const findField = (keywords: string[]) => 
-        schema.fields.find((f: any) => keywords.some(k => f.key.toLowerCase().includes(k)));
+        schema.fields.find((f: any) => keywords.some(k => f.key.toLowerCase()?.includes(k)));
       
       const titleField = findField(['title', 'name']);
       const subtitleField = findField(['subtitle', 'tagline']);

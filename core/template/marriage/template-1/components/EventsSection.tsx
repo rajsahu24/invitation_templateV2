@@ -51,7 +51,7 @@ export function EventsSection() {
     let description = '';
 
     if (schema?.fields) {
-      const titleField = schema.fields.find((f: any) => f.key.toLowerCase().includes('name') || f.key.toLowerCase().includes('title'));
+      const titleField = schema.fields.find((f: any) => f.key.toLowerCase()?.includes('name') || f.key.toLowerCase()?.includes('title'));
       title = titleField ? event[titleField.key] : '';
 
       return (
@@ -77,7 +77,7 @@ export function EventsSection() {
                 {schema.fields.map((field: any) => renderFieldValue(event, field))}
               </div>
 
-              {schema.fields.filter((f: any) => !['datetime', 'date'].includes(f.type) && !f.key.toLowerCase().includes('location') && !f.key.toLowerCase().includes('name') && !f.key.toLowerCase().includes('title')).map((field: any) => {
+              {schema.fields.filter((f: any) => !['datetime', 'date']?.includes(f.type) && !f.key.toLowerCase()?.includes('location') && !f.key.toLowerCase()?.includes('name') && !f.key.toLowerCase()?.includes('title')).map((field: any) => {
                 const value = event[field.key];
                 return value ? <p key={field.key} className="font-cormorant text-xl leading-relaxed text-gray-200">{value}</p> : null;
               })}
@@ -178,7 +178,7 @@ export function EventsSection() {
       );
     }
 
-    if (field.key.toLowerCase().includes('location')) {
+    if (field.key.toLowerCase()?.includes('location')) {
       return (
         <div className="flex items-center gap-2">
           <MapPin className="w-4 h-4 text-royal-gold" />
