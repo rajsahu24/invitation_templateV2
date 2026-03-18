@@ -53,7 +53,7 @@ function TemplateContent() {
   const pathParts = pathname.split('/').filter(Boolean);
   const firstSegment = pathParts[0];
   const idType: IdType = firstSegment ? identifyIdType(firstSegment) : 'unknown';
-  
+
   let category: string | undefined;
   let templateName: string | undefined;
   let id: string | undefined;
@@ -147,7 +147,7 @@ function TemplateContent() {
     return (
       <div className="min-h-screen flex items-center justify-center bg-stone-50">
         {/* <div className="w-10 h-10 border-4 border-stone-300 border-t-stone-200 rounded-full animate-spin" /> */}
-        <div className="text-stone-500">Loading Template...</div>
+        <div className="text-stone-500">Loading Templatefgsdgdgf...</div>
       </div>
     );
   }
@@ -169,6 +169,7 @@ function TemplateContent() {
 }
 
 export default function TemplateRenderer() {
+  
   const params = useParams();
   const pathname = usePathname();
   const pathParts = pathname.split('/').filter(Boolean);
