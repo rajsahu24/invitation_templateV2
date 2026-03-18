@@ -117,26 +117,50 @@ export const useGetTemplateData = () => {
         }
     }, []);
 
+    const fetchTemplateByName = useCallback(async (categoryAndName: string) => {
+        setIsLoading(true);
+        const [category, template_name] = categoryAndName.split('/');
+        try {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/templates/preview/${category}/${template_name}`);
+            if (response.ok) {
+                const data = await response.json();
+                setPreviewData(data);
+                console.log('Preview template data fetched:', data);
+            } else {
+                setPreviewData([]);
+            }
+        } catch (error) {
+            console.error('Failed to fetch preview template data:', error);
+            setPreviewData([]);
+        } finally {
+            setIsLoading(false);
+        }
+    }, []);
+
     // Initial data load effect
     useEffect(() => {
         if (hasFetchedInitial) return;
 
         const { id, type } = getIdFromPath(window.location.pathname);
         console.log('Hook initialized. URL context:', { id, type });
-
+        
         if (type === 'rsvp' && id) {
             fetchGuestInvitationData(id);
         } else if (type === 'public' && id) {
             fetchInvitationDetails(id);
+        } else if (type === 'preview' && id) {
+            fetchTemplateByName(id);
         } else if (type === 'slug' && id) {
             fetchInvitationBySlug(id);
+        } else if (type === 'invitation_id' && id) {
+            fetchTemplateData(id);
         } else if (!id) {
             setPreviewData([]);
             setIsLoading(false);
         }
 
         setHasFetchedInitial(true);
-    }, [hasFetchedInitial, fetchGuestInvitationData, fetchInvitationBySlug, fetchInvitationDetails, fetchInvitationData, fetchTemplateData]);
+    }, [hasFetchedInitial, fetchGuestInvitationData, fetchInvitationBySlug, fetchInvitationDetails, fetchInvitationData, fetchTemplateData, fetchTemplateByName]);
 
     // Message listener effect
     useEffect(() => {

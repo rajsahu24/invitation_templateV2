@@ -18,6 +18,7 @@ export function useInvitationId() {
   
   const resolvedParams = params as Record<string, unknown>;
   const pathParts = pathname.split('/').filter(Boolean);
+  console.log("Hello.......???",pathParts.length)
   const firstSegment = pathParts[0];
   
   // Use common method to identify ID type
@@ -38,7 +39,7 @@ export function useInvitationId() {
   } else if (idType === 'slug') {
     // Could be invitation ID or preview slug
     // Check for explicit route prefixes
-    if (firstSegment === 'invitation') {
+    if (firstSegment === '') {
       const id = Array.isArray(resolvedParams.id) 
         ? resolvedParams.id[0] 
         : resolvedParams.id;

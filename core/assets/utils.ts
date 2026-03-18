@@ -7,25 +7,22 @@
  * - Other: treated as slug/invitation ID
  */
 
-export type IdType = 'rsvp' | 'public' | 'slug' | 'unknown';
+export type IdType = 'rsvp' | 'public' | 'slug' | 'invitation_id' | 'preview' | 'unknown';
 
 /**
  * Identify the type of ID based on its prefix and length
  */
 export function identifyIdType(id: string): IdType {
   if (!id) return 'unknown';
-  
+  const uuidRegex =/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
   // RSVP token: starts with "rsvp_" and length is 15 (rsvp_ + 10 chars = 15)
-  if (id.startsWith('rsvp_') && id.length === 15) {
+  if(uuidRegex.test(id)){
+    return 'invitation_id'
+  }else if (id.startsWith('rsvp_') && id.length === 15) {
     return 'rsvp';
-  }
-  
-  // Public ID: starts with "pub_" and length is 16 (pub_ + 12 chars = 16)
-  if (id.startsWith('pub_') && id.length === 16) {
+  }else if (id.startsWith('pub_') && id.length === 16) {
     return 'public';
-  }
-  
-  // Default: treated as slug/invitation ID
+  } 
   return 'slug';
 }
 
@@ -42,6 +39,16 @@ export function getIdFromPath(pathname: string): { id: string | null; type: IdTy
 
   if (!firstSegment) {
     return { id: null, type: 'unknown' };
+  }
+
+  // /public/{pub_id}
+  if (firstSegment === 'public' && pathParts[1]) {
+    return { id: pathParts[1], type: 'public' };
+  }
+
+  // /preview/{category}/{template_name}/demo
+  if (firstSegment === 'preview' && pathParts[1] && pathParts[2]) {
+    return { id: `${pathParts[1]}/${pathParts[2]}`, type: 'preview' };
   }
 
   const type = identifyIdType(firstSegment);
