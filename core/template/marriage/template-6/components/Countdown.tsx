@@ -87,23 +87,13 @@ function Colon() {
 
 export function CountdownSection() {
   const { previewData } = usePreview();
-  const heroSection = previewData?.hero_section;
-  const data = heroSection?.data;
-  const schema = heroSection?.schema;
-
+  const countdownSection = previewData?.Countdown_section;
+  const data = countdownSection?.data;
   const getFieldValue = (key: string) => (data && typeof data === 'object' ? (data as any)[key] : '') || '';
 
-  let rawDate = '';
-  if (data && typeof data === 'object') {
-    if (schema?.fields) {
-      const dateField = schema.fields.find((f: any) => f.key.toLowerCase().includes('date'));
-      rawDate = dateField ? getFieldValue(dateField.key) : '';
-    } else {
-      rawDate = getFieldValue('date') || getFieldValue('wedding_date');
-    }
-  }
 
-  const targetDate = rawDate ? new Date(rawDate) : new Date('2026-09-12T00:00:00');
+
+  const targetDate = data ? new Date(data.date_time) : new Date('2026-09-12T00:00:00');
   const [timeLeft, setTimeLeft] = useState<TimeLeft>(getTimeLeft(targetDate));
 
   useEffect(() => {

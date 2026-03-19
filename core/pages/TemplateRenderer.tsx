@@ -147,7 +147,7 @@ function TemplateContent() {
     return (
       <div className="min-h-screen flex items-center justify-center bg-stone-50">
         {/* <div className="w-10 h-10 border-4 border-stone-300 border-t-stone-200 rounded-full animate-spin" /> */}
-        <div className="text-stone-500">Loading Templatefgsdgdgf...</div>
+        <div className="text-stone-500">Loading Template...</div>
       </div>
     );
   }

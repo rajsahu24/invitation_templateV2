@@ -68,6 +68,7 @@ function MarriageContent() {
               <Venue />
             </div>
 
+
             <div id="event_section">
               <EventsSection />
             </div>

@@ -47,10 +47,10 @@ export function EventsSection() {
   const getDesc = (event: any) => {
     if (schema?.fields) {
       const f = schema.fields.find((f: any) =>
-        f.key.toLowerCase().includes('desc') || f.key.toLowerCase().includes('tag'));
+        f.key.toLowerCase().includes('location') || f.key.toLowerCase().includes('location'));
       return f ? event[f.key] : '';
     }
-    return event.description || event.tag_line || '';
+    return event.location || '';
   };
 
   return (
