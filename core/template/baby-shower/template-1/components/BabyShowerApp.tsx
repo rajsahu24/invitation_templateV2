@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { HeroSection } from './HeroSection';
 import { NavigationCards } from './NavigationCards';
@@ -7,6 +7,8 @@ import { GallerySection } from './GallerySection';
 import { RSVPSection } from './RSVPSection';
 import { MusicPlayer } from './MusicPlayer';
 import { IntroVideo } from './IntroVideo';
+
+const AUDIO_URL = 'https://res.cloudinary.com/dwbed0m72/video/upload/v1774095377/audioblocks-growing-up_SUYs-rTGT_NWM_v2g7gk.mp3';
 
 type SectionType = 'event' | 'gallery' | 'rsvp' | null;
 
@@ -28,8 +30,14 @@ export function BabyShowerApp() {
   const [showCurtain, setShowCurtain] = useState(false);
   const [showTemplate, setShowTemplate] = useState(false);
   const [activeSection, setActiveSection] = useState<SectionType>(null);
+  const audioRef = useRef<HTMLAudioElement>(null);
+
+  const startMusic = () => {
+    audioRef.current?.play().catch(() => {});
+  };
 
   const handleIntroComplete = () => {
+    startMusic();
     setShowCurtain(true);
     // Show template content slightly after curtain starts
     setTimeout(() => setShowTemplate(true), 200);
@@ -44,10 +52,12 @@ export function BabyShowerApp() {
 
   return (
     <>
+      <audio ref={audioRef} src={AUDIO_URL} loop preload="auto" />
+
       {/* Intro video — shown until complete */}
       <AnimatePresence>
         {!introComplete && !showCurtain && (
-          <IntroVideo onComplete={handleIntroComplete} />
+          <IntroVideo onComplete={handleIntroComplete} onFirstClick={startMusic} />
         )}
       </AnimatePresence>
 
@@ -107,7 +117,7 @@ export function BabyShowerApp() {
               </AnimatePresence>
             </div>
 
-            <MusicPlayer />
+            <MusicPlayer audioRef={audioRef} />
           </motion.div>
         )}
       </AnimatePresence>

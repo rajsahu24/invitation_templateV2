@@ -1,85 +1,84 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { motion } from 'framer-motion';
-export function MusicPlayer() {
-  const [isPlaying, setIsPlaying] = useState(false);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-  // We use a placeholder audio URL. In a real app, this would be a real lullaby.
-  const audioUrl =
-  'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3';
-  useEffect(() => {
-    if (audioRef.current) {
-      if (isPlaying) {
-        audioRef.current.
-        play().
-        catch((e) => console.log('Audio play failed:', e));
-      } else {
-        audioRef.current.pause();
-      }
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+
+interface MusicPlayerProps {
+  audioRef: React.RefObject<HTMLAudioElement | null>;
+}
+
+export function MusicPlayer({ audioRef }: MusicPlayerProps) {
+  const [isPlaying, setIsPlaying] = useState(true);
+
+  const toggle = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!audioRef.current) return;
+    if (isPlaying) {
+      audioRef.current.pause();
+      setIsPlaying(false);
+    } else {
+      audioRef.current.play().catch(() => {});
+      setIsPlaying(true);
     }
-  }, [isPlaying]);
+  };
+
   return (
     <motion.div
-      initial={{
-        opacity: 0,
-        y: 20
-      }}
-      animate={{
-        opacity: 1,
-        y: 0
-      }}
-      transition={{
-        delay: 1,
-        duration: 0.8
-      }}
-      className="fixed bottom-6 right-6 z-50 flex items-center gap-3 glass-panel rounded-full py-2 px-4 shadow-lg">
-      
-      <audio ref={audioRef} src={audioUrl} loop />
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.5, duration: 0.7 }}
+      className="fixed bottom-6 right-6 z-50"
+    >
+      <motion.button
+        onClick={toggle}
+        whileHover={{ scale: 1.08 }}
+        whileTap={{ scale: 0.94 }}
+        className="relative w-14 h-14 rounded-full flex items-center justify-center shadow-xl"
+        style={{
+          background: 'linear-gradient(135deg, #F5D5CC, #D8C8E8)',
+          border: '2px solid rgba(255,255,255,0.7)',
+        }}
+        aria-label={isPlaying ? 'Pause music' : 'Play music'}
+      >
+        <AnimatePresence>
+          {isPlaying && (
+            <>
+              <motion.div
+                key="r1"
+                className="absolute inset-0 rounded-full"
+                style={{ border: '2px solid rgba(196,160,176,0.5)' }}
+                initial={{ scale: 1, opacity: 0.6 }}
+                animate={{ scale: 1.9, opacity: 0 }}
+                transition={{ duration: 1.6, repeat: Infinity, ease: 'easeOut' }}
+              />
+              <motion.div
+                key="r2"
+                className="absolute inset-0 rounded-full"
+                style={{ border: '2px solid rgba(196,160,176,0.35)' }}
+                initial={{ scale: 1, opacity: 0.5 }}
+                animate={{ scale: 1.9, opacity: 0 }}
+                transition={{ duration: 1.6, repeat: Infinity, ease: 'easeOut', delay: 0.5 }}
+              />
+            </>
+          )}
+        </AnimatePresence>
 
-      <div className="flex flex-col">
-        <span className="text-xs font-semibold text-[var(--text-dark)] tracking-wider uppercase">
-          Lullaby
-        </span>
-        <span className="text-[0.65rem] text-[var(--text-main)] italic">
-          ♪ Tap to play
-        </span>
-      </div>
-
-      <button
-        onClick={() => setIsPlaying(!isPlaying)}
-        className="w-10 h-10 rounded-full bg-[var(--blush)] flex items-center justify-center text-white hover:bg-[var(--blush-dark)] transition-colors shadow-sm"
-        aria-label={isPlaying ? 'Pause music' : 'Play music'}>
-        
-        {isPlaying ?
-        <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
-            <rect x="6" y="4" width="4" height="16" rx="1" />
-            <rect x="14" y="4" width="4" height="16" rx="1" />
-          </svg> :
-
-        <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 ml-1">
-            <path d="M5 3l14 9-14 9V3z" />
+        {isPlaying ? (
+          <div className="flex items-end gap-[3px] h-5">
+            {[0.4, 0.7, 1, 0.6, 0.85].map((h, i) => (
+              <motion.div
+                key={i}
+                className="w-[3px] rounded-full"
+                style={{ background: '#C4A0B0', height: 20, originY: 1 }}
+                animate={{ scaleY: [h, 1, h * 0.5, 1, h] }}
+                transition={{ duration: 0.8, repeat: Infinity, delay: i * 0.12, ease: 'easeInOut' }}
+              />
+            ))}
+          </div>
+        ) : (
+          <svg viewBox="0 0 24 24" fill="#C4A0B0" className="w-6 h-6 ml-0.5">
+            <path d="M8 5v14l11-7z" />
           </svg>
-        }
-      </button>
-
-      {/* Animated sound waves when playing */}
-      {isPlaying &&
-      <div className="absolute -top-2 -right-2 flex gap-1">
-          {[1, 2, 3].map((i) =>
-        <motion.div
-          key={i}
-          animate={{
-            height: ['4px', '12px', '4px']
-          }}
-          transition={{
-            repeat: Infinity,
-            duration: 0.8,
-            delay: i * 0.2
-          }}
-          className="w-1 bg-[var(--lavender-dark)] rounded-full" />
-
         )}
-        </div>
-      }
-    </motion.div>);
-
+      </motion.button>
+    </motion.div>
+  );
 }

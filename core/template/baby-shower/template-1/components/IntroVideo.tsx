@@ -6,9 +6,10 @@ const VIDEO_URL =
 
 interface IntroVideoProps {
   onComplete: () => void;
+  onFirstClick: () => void;
 }
 
-export function IntroVideo({ onComplete }: IntroVideoProps) {
+export function IntroVideo({ onComplete, onFirstClick }: IntroVideoProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [playing, setPlaying] = useState(false);
   const [showHint, setShowHint] = useState(true);
@@ -19,6 +20,7 @@ export function IntroVideo({ onComplete }: IntroVideoProps) {
       videoRef.current.play();
       setPlaying(true);
       setShowHint(false);
+      onFirstClick();
     }
   };
 
