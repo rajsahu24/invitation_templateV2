@@ -11,7 +11,7 @@ const formatDate = (dateString: string) => {
 
 export function VenueIllustration() {
   const { previewData } = usePreview();
-  const heroSection = previewData?.hero_section;
+  const heroSection = previewData?.location_section;
   const data = heroSection?.data;
   const schema = heroSection?.schema;
 

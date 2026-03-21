@@ -6,9 +6,10 @@ const BG = 'https://res.cloudinary.com/dwbed0m72/image/upload/v1773927073/can_yo
 export function DressCode() {
   const { previewData } = usePreview();
   const data = (previewData as any)?.dress_code_section?.data;
-
-  const women = data?.women || data?.woman || 'Cocktail or formal dress';
-  const men   = data?.men   || data?.man   || 'Dark suit and tie';
+console.log(previewData, "previewData")
+  const women = data?.women || data?.woman_dress_code || 'Cocktail or formal dress';
+  const men   = data?.men   || data?.man_dress_code
+   || 'Dark suit and tie';
 
   const script: React.CSSProperties = {
     fontFamily: 'var(--font-script)',
