@@ -40,7 +40,7 @@ const TEMPLATE_MAP: Record<string, Record<string, React.ComponentType>> = {
     BirthdayWisht1
   },
   baby_shower:{
-    "little-hunny":BabyShowerTemplateT1
+    "little hunny":BabyShowerTemplateT1
   }
 };  
 
