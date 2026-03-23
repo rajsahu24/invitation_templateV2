@@ -43,7 +43,7 @@ export function HeroSection() {
     }
   }
 
-  rawDate = eventData.date_time
+  rawDate = eventData?.date_time
 
   const targetDate = rawDate ? new Date(rawDate) : new Date('2026-06-14T14:00:00');
   const timeLeft = useCountdown(targetDate);
