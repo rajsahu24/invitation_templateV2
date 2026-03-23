@@ -18,6 +18,9 @@ import BirthdayWisht1 from '@/core/template/birthday-wish/template-1'
 import MarriageTemplate5 from "@/core/template/marriage/template-5";
 import MarriageTemplate6 from "@/core/template/marriage/template-6";
 import BabyShowerTemplateT1 from "@/core/template/baby-shower/template-1"
+import BirthdayWisht2 from "@/core/template/birthday-wish/template-2" 
+
+
 
 const TEMPLATE_MAP: Record<string, Record<string, React.ComponentType>> = {
   Wedding: {
@@ -37,7 +40,8 @@ const TEMPLATE_MAP: Record<string, Record<string, React.ComponentType>> = {
   },
   birthday_wish:{
     "surprise birthday card":
-    BirthdayWisht1
+    BirthdayWisht1,
+    'cosmic wishes':BirthdayWisht2
   },
   baby_shower:{
     "little hunny":BabyShowerTemplateT1
