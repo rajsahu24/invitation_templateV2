@@ -26,7 +26,7 @@ export function HeroSection() {
   const heroSection = (previewData as any)?.hero_section;
   const data = heroSection?.data;
   const schema = heroSection?.schema;
-  const eventData = (previewData as any)?.event_section?.data;
+  const eventData = (previewData as any)?.countdown_section?.data;
 
   const get = (key: string) => (data && typeof data === 'object' ? (data as any)[key] : '') || '';
 
@@ -36,17 +36,14 @@ export function HeroSection() {
       const find = (kws: string[]) =>
         schema.fields.find((f: any) => kws.some((k: string) => f.key.toLowerCase().includes(k)));
       honoree = get(find(['honoree', 'name', 'bride', 'mom'])?.key ?? '');
-      tagLine  = get(find(['tag', 'line', 'subtitle'])?.key ?? '');
-      rawDate  = get(find(['date'])?.key ?? '');
+      tagLine  = get(find(['tag', 'line', 'subtitle','title'])?.key ?? '');
     } else {
       honoree = get('honoree_name') || get('name') || get('bride_name');
-      tagLine  = get('tag_line') || get('invitation_tag_line') || get('subtitle');
-      rawDate  = get('date') || get('wedding_date');
+      tagLine  = get('tag_line') || get('invitation_tag_line') || get('subtitle') || get('title');
     }
   }
-  if (!rawDate && Array.isArray(eventData) && eventData.length > 0) {
-    rawDate = eventData[0]?.date_time || eventData[0]?.start_time || '';
-  }
+
+  rawDate = eventData.date_time
 
   const targetDate = rawDate ? new Date(rawDate) : new Date('2026-06-14T14:00:00');
   const timeLeft = useCountdown(targetDate);

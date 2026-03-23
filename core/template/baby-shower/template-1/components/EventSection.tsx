@@ -7,10 +7,10 @@ interface SectionProps { onBack: () => void; }
 
 export function EventSection({ onBack }: SectionProps) {
   const { previewData } = usePreview();
-  const heroData  = (previewData as any)?.hero_section?.data;
-  const heroSchema = (previewData as any)?.hero_section?.schema;
+  const heroData  = (previewData as any)?.event_section?.data;
+  const heroSchema = (previewData as any)?.event_section?.schema;
   const eventData  = (previewData as any)?.event_section?.data;
-  const dressData  = (previewData as any)?.dress_code_section?.data;
+  const dressData  = (previewData as any)?.event_section?.data;
 
   const get = (obj: any, key: string) => (obj && typeof obj === 'object' ? obj[key] : '') || '';
 
@@ -30,10 +30,15 @@ export function EventSection({ onBack }: SectionProps) {
       venueAddress = get(heroData, find(['address', 'location'])?.key ?? '');
     } else {
       const dateVal = get(heroData, 'date') || get(heroData, 'wedding_date');
+      const timeVal = get(heroData, 'time') || get(heroData, 'wedding_time');
       if (dateVal) {
         const d = new Date(dateVal);
         date = d.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
-        time = d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+        if (!timeVal) time = d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+      }
+      if (timeVal) {
+        const t = new Date(`1970-01-01T${timeVal}`);
+        time = isNaN(t.getTime()) ? timeVal : t.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
       }
       venueName    = get(heroData, 'venue_name') || get(heroData, 'venue');
       venueAddress = get(heroData, 'location')   || get(heroData, 'address') || get(heroData, 'wedding_location');
@@ -55,7 +60,7 @@ export function EventSection({ onBack }: SectionProps) {
   const displayDate    = date        || 'Saturday, June 14th, 2026';
   const displayTime    = time        || '2:00 PM – 5:00 PM';
   const displayVenue   = venueName   || 'The Garden House';
-  const displayAddress = venueAddress|| '123 Bloom Street, Springville';
+  const displayAddress = venueAddress|| 'Irrigation Park';
 
   const mapUrl = `https://maps.google.com/maps?q=${encodeURIComponent(displayAddress)}&output=embed`;
 
