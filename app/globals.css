@@ -1,5 +1,12 @@
 @import "tailwindcss";
 
+html, body {
+  height: auto;
+  min-height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
 @theme {
     --color-royal-purple: #4B0082;
     --color-royal-deepPurple: #2E0052;

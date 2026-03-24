@@ -80,7 +80,7 @@ export function BabyShowerApp() {
             initial={{ opacity: 0, scale: 1.06, filter: 'blur(12px)' }}
             animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
             transition={{ duration: 1.1, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
-            className="min-h-screen w-full relative overflow-x-hidden bg-gradient-to-b from-[var(--cream-warm)] to-[var(--blush-light)]/30"
+            className="min-h-screen w-full relative overflow-x-clip bg-gradient-to-b from-[var(--cream-warm)] to-[var(--blush-light)]/30" style={{ overflowY: 'visible' }}
           >
             {/* Background texture */}
             <div
@@ -90,7 +90,7 @@ export function BabyShowerApp() {
               }}
             />
 
-            <div className="container mx-auto px-4 py-8 min-h-screen flex flex-col items-center justify-center relative z-10">
+            <div className="container mx-auto px-4 py-8 min-h-screen flex flex-col items-center relative z-10">
               <AnimatePresence mode="wait">
                 {activeSection === null ? (
                   <motion.div
