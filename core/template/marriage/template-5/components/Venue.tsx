@@ -25,7 +25,7 @@ export function Venue() {
   if (heroData && typeof heroData === 'object') {
     if (heroSchema?.fields) {
       const findField = (keywords: string[]) =>
-        heroSchema.fields.find((f: any) => keywords.some((k: string) => f.key.toLowerCase().includes(k)));
+        heroSchema.fields.find((f: any) => keywords.some((k: string) => f.key.toLowerCase()?.includes(k)));
       const dateVal = getFieldValue(findField(['date'])?.key || '');
       if (dateVal) {
         const d = new Date(dateVal);
@@ -49,7 +49,7 @@ export function Venue() {
   // Try to get time from first event if not in hero
   if (!weddingTime && events.length > 0) {
     const raw = events[0]?.time || events[0]?.date_time || '';
-    if (raw.includes('T')) {
+    if (raw?.includes('T')) {
       weddingTime = new Date(raw).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', hour12: false });
     } else if (/^\d{1,2}:\d{2}/.test(raw)) {
       weddingTime = raw;

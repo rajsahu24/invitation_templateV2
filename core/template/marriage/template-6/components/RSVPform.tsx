@@ -35,7 +35,7 @@ function RSVPform() {
     finally { setIsSubmitting(false); }
   };
 
-  const alreadyResponded = isSubmitted || [2, 3, 4].includes(guest_status?.status);
+  const alreadyResponded = isSubmitted || [2, 3, 4]?.includes(guest_status?.status);
 
   return (
     <section className="w-full py-14 px-6" style={{ background: 'hsl(var(--background))' }} id="rsvp">

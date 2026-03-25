@@ -38,7 +38,7 @@ export function EventsSection() {
   const getTitle = (event: any) => {
     if (schema?.fields) {
       const f = schema.fields.find((f: any) =>
-        f.key.toLowerCase().includes('name') || f.key.toLowerCase().includes('title'));
+        f.key.toLowerCase()?.includes('name') || f.key.toLowerCase()?.includes('title'));
       return f ? event[f.key] : '';
     }
     return event.event_name || event.name || event.title || '';
@@ -47,7 +47,7 @@ export function EventsSection() {
   const getDesc = (event: any) => {
     if (schema?.fields) {
       const f = schema.fields.find((f: any) =>
-        f.key.toLowerCase().includes('location') || f.key.toLowerCase().includes('location'));
+        f.key.toLowerCase()?.includes('location') || f.key.toLowerCase()?.includes('location'));
       return f ? event[f.key] : '';
     }
     return event.location || '';

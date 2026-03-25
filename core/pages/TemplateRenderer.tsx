@@ -181,12 +181,12 @@ export default function TemplateRenderer() {
   const params = useParams();
   const pathname = usePathname();
   const pathParts = pathname.split('/').filter(Boolean);
-  console.log("hello....?????")
+
   const firstSegment = pathParts[0];
   
   // Use common method to identify ID type
   const idType: IdType = firstSegment ? identifyIdType(firstSegment) : 'unknown';
-  console.log("Hello......",firstSegment)
+
   const resolvedParams = params as Record<string, unknown>;
   
   // Get ID based on route type

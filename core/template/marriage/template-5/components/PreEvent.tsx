@@ -106,10 +106,10 @@ export function PreEvent() {
             const location = event.location || event.event_location || '';
             const image = event.image || event.image_url || '';
 
-            const displayDate = rawDate.includes('T') || rawDate.match(/^\d{4}/)
+            const displayDate = rawDate?.includes('T') || rawDate.match(/^\d{4}/)
               ? formatEventDate(rawDate)
               : rawDate;
-            const displayTime = rawTime.includes('T') || rawTime.match(/^\d{4}/)
+            const displayTime = rawTime?.includes('T') || rawTime.match(/^\d{4}/)
               ? formatTime(rawTime)
               : rawTime;
 

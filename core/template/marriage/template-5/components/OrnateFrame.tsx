@@ -43,10 +43,10 @@ function Corner({
     'bottom-left': 'rotate(270deg)'
   }[position];
   const style = {
-    top: position.includes('top') ? '-8px' : 'auto',
-    bottom: position.includes('bottom') ? '-8px' : 'auto',
-    left: position.includes('left') ? '-8px' : 'auto',
-    right: position.includes('right') ? '-8px' : 'auto',
+    top: position?.includes('top') ? '-8px' : 'auto',
+    bottom: position?.includes('bottom') ? '-8px' : 'auto',
+    left: position?.includes('left') ? '-8px' : 'auto',
+    right: position?.includes('right') ? '-8px' : 'auto',
     transform: rotation
   };
   return <div className={`absolute w-8 h-8 ${color}`} style={style}>

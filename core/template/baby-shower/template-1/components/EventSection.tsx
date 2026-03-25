@@ -19,7 +19,7 @@ export function EventSection({ onBack }: SectionProps) {
   if (heroData && typeof heroData === 'object') {
     if (heroSchema?.fields) {
       const find = (kws: string[]) =>
-        heroSchema.fields.find((f: any) => kws.some((k: string) => f.key.toLowerCase().includes(k)));
+        heroSchema.fields.find((f: any) => kws.some((k: string) => f.key.toLowerCase()?.includes(k)));
       const dateVal = get(heroData, find(['date'])?.key ?? '');
       if (dateVal) {
         const d = new Date(dateVal);

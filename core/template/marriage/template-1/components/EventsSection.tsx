@@ -92,7 +92,7 @@ export function EventsSection() {
       
       const dateTimeValue = event.date_time || event.start_time || event.date;
       if (dateTimeValue) {
-        if (dateTimeValue.includes('T')) {
+        if (dateTimeValue?.includes('T')) {
           const { date, time } = formatDateTime(dateTimeValue);
           dateDisplay = date;
           timeDisplay = time;

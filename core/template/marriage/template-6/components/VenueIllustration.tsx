@@ -22,7 +22,7 @@ export function VenueIllustration() {
   if (data && typeof data === 'object') {
     if (schema?.fields) {
       const find = (kws: string[]) =>
-        schema.fields.find((f: any) => kws.some((k: string) => f.key.toLowerCase().includes(k)));
+        schema.fields.find((f: any) => kws.some((k: string) => f.key.toLowerCase()?.includes(k)));
       venueName    = get(find(['venue', 'name'])?.key ?? '');
       venueAddress = get(find(['address'])?.key ?? '');
       venueCity    = get(find(['city'])?.key ?? '');

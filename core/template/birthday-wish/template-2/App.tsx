@@ -29,7 +29,7 @@ export function App() {
   if (heroData && typeof heroData === 'object') {
     if (heroSchema?.fields) {
       const findField = (keywords: string[]) =>
-        heroSchema.fields.find((f: any) => keywords.some((k: string) => f.key.toLowerCase().includes(k)));
+        heroSchema.fields.find((f: any) => keywords.some((k: string) => f.key.toLowerCase()?.includes(k)));
       name = getField(findField(['celebrant name', 'name','celebrant'])?.key);
       message = getField(findField(['tag', 'line', 'message'])?.key);
     } else {

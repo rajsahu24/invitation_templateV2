@@ -69,10 +69,10 @@ export function EventSchedule() {
     let timeDisplay = '';
 
     if (schema?.fields) {
-      const titleField = schema.fields.find((f: any) => f.key.toLowerCase().includes('name') || f.key.toLowerCase().includes('title'));
+      const titleField = schema.fields.find((f: any) => f.key.toLowerCase()?.includes('name') || f.key.toLowerCase()?.includes('title'));
       const dateField = schema.fields.find((f: any) => f.type === 'datetime' || f.type === 'date');
-      const locationField = schema.fields.find((f: any) => f.key.toLowerCase().includes('location'));
-      const descField = schema.fields.find((f: any) => f.key.toLowerCase().includes('description') || f.key.toLowerCase().includes('tag'));
+      const locationField = schema.fields.find((f: any) => f.key.toLowerCase()?.includes('location'));
+      const descField = schema.fields.find((f: any) => f.key.toLowerCase()?.includes('description') || f.key.toLowerCase()?.includes('tag'));
 
       title = titleField ? event[titleField.key] : '';
       location = locationField ? event[locationField.key] : '';
@@ -94,7 +94,7 @@ export function EventSchedule() {
       
       const dateTimeValue = event.date_time || event.start_time || event.date;
       if (dateTimeValue) {
-        if (dateTimeValue.includes('T')) {
+        if (dateTimeValue?.includes('T')) {
           const { date, time } = formatDateTime(dateTimeValue);
           dateDisplay = date;
           timeDisplay = time;

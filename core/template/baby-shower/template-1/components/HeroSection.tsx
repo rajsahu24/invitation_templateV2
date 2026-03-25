@@ -34,7 +34,7 @@ export function HeroSection() {
   if (data && typeof data === 'object') {
     if (schema?.fields) {
       const find = (kws: string[]) =>
-        schema.fields.find((f: any) => kws.some((k: string) => f.key.toLowerCase().includes(k)));
+        schema.fields.find((f: any) => kws.some((k: string) => f.key.toLowerCase()?.includes(k)));
       honoree = get(find(['honoree', 'name', 'bride', 'mom'])?.key ?? '');
       tagLine  = get(find(['tag', 'line', 'subtitle','title'])?.key ?? '');
     } else {
