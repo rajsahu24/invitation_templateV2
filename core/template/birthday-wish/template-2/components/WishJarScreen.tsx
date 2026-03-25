@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 interface WishJarScreenProps {
   onNext: () => void;
+  name:string
 }
 const WISHES = [
 {
@@ -94,7 +95,7 @@ function JarIllustration() {
     </svg>);
 
 }
-export function WishJarScreen({ onNext }: WishJarScreenProps) {
+export function WishJarScreen({ onNext, name ='rohan' }: WishJarScreenProps) {
   const [opened, setOpened] = useState(false);
   return (
     <motion.div
@@ -133,7 +134,7 @@ export function WishJarScreen({ onNext }: WishJarScreenProps) {
           delay: 0.3
         }}>
         
-        Wishes for Rohan
+        Wishes for {name}
       </motion.h1>
 
       <div className="flex-1 flex items-center justify-center relative w-full">

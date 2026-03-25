@@ -4,6 +4,7 @@ import { CrosshairIcon } from 'lucide-react';
 import { StringLights } from './StringLights';
 interface BalloonPopScreenProps {
   onNext: () => void;
+  name:string
 }
 interface BalloonConfig {
   word: string;
@@ -197,7 +198,7 @@ function BurstEffect({ particles }: {particles: BurstParticle[];}) {
     </>);
 
 }
-export function BalloonPopScreen({ onNext }: BalloonPopScreenProps) {
+export function BalloonPopScreen({ onNext, name='rohan' }: BalloonPopScreenProps) {
   const [popped, setPopped] = useState(false);
   const [showWords, setShowWords] = useState(false);
   const [burstParticles, setBurstParticles] = useState<BurstParticle[]>([]);
@@ -262,7 +263,7 @@ export function BalloonPopScreen({ onNext }: BalloonPopScreenProps) {
           duration: 0.6
         }}>
         
-        Rohan, you are so...
+        {name}, you are so...
       </motion.h1>
 
       {/* Balloons area */}

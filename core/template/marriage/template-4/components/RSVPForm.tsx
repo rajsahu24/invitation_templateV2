@@ -1,41 +1,19 @@
 import React, { useState, useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { BotanicalLeaf } from './BotanicalLeaf';
-import {
-  CheckIcon,
-  UserIcon,
-  MailIcon,
-  PhoneIcon} from
-'lucide-react';
+import { CheckIcon, UserIcon, MailIcon, PhoneIcon } from 'lucide-react';
+import { useInvitationId } from '@/core/hooks/useInvitationId';
 interface FormData {
   name: string;
   email: string;
   phone: string;
-  guests: string;
-  events: {
-    engagement: boolean;
-    mehendi: boolean;
-    sangeet: boolean;
-    wedding: boolean;
-    reception: boolean;
-  };
-  dietary: string;
-  message: string;
+  attendance: 'accept' | 'decline' | '';
 }
 const initialFormData: FormData = {
   name: '',
   email: '',
   phone: '',
-  guests: '1',
-  events: {
-    engagement: false,
-    mehendi: false,
-    sangeet: false,
-    wedding: true,
-    reception: true
-  },
-  dietary: '',
-  message: ''
+  attendance: '',
 };
 // const eventLabels = {
 //   engagement: 'Engagement Ceremony',
@@ -83,12 +61,11 @@ const initialFormData: FormData = {
 
 // }
 export function RSVPForm() {
+  const { invitationId } = useInvitationId();
   const [formData, setFormData] = useState<FormData>(initialFormData);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>(
-    {}
-  );
+  const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>({});
   const containerRef = useRef(null);
   const isInView = useInView(containerRef, {
     once: true,
@@ -96,20 +73,13 @@ export function RSVPForm() {
   });
   const validateForm = () => {
     const newErrors: Partial<Record<keyof FormData, string>> = {};
-    if (!formData.name.trim()) {
-      newErrors.name = 'Please enter your name';
-    }
+    if (!formData.name.trim()) newErrors.name = 'Please enter your name';
     if (!formData.email.trim() && !formData.phone.trim()) {
       newErrors.email = 'Please enter email or phone';
-    } else if (
-    formData.email &&
-    !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email))
-    {
+    } else if (formData.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
       newErrors.email = 'Please enter a valid email';
     }
-    if (!Object.values(formData.events).some(Boolean)) {
-      newErrors.events = 'Please select at least one event' as any;
-    }
+    if (!formData.attendance) newErrors.attendance = 'Please select your attendance';
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -117,10 +87,24 @@ export function RSVPForm() {
     e.preventDefault();
     if (!validateForm()) return;
     setIsSubmitting(true);
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    setIsSubmitting(false);
-    setIsSubmitted(true);
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/guests`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          invitation_id: invitationId,
+          status: formData.attendance === 'accept' ? '2' : '4',
+        }),
+      });
+      if (res.ok) setIsSubmitted(true);
+    } catch (err) {
+      console.error('RSVP submission failed:', err);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
   // const handleEventToggle = (event: keyof FormData['events']) => {
   //   setFormData((prev) => ({
@@ -173,11 +157,11 @@ export function RSVPForm() {
               day. We've received your RSVP and will send you more details soon.
             </p>
 
-            <div className="flex items-center justify-center gap-2 text-rose">
+            {/* <div className="flex items-center justify-center gap-2 text-rose">
               <span className="text-2xl">♥</span>
-              <span className="font-serif italic">See you in Udaipur!</span>
+              <span className="font-serif italic">See you in {formData.}!</span>
               <span className="text-2xl">♥</span>
-            </div>
+            </div> */}
           </motion.div>
         </div>
       </section>);
@@ -445,6 +429,28 @@ export function RSVPForm() {
                 placeholder="Share your wishes or any special requests..." />
 
             </div> */}
+
+            {/* Attendance */}
+            <div>
+              <label className="flex items-center gap-2 text-forest font-medium mb-2">
+                Will you attend?
+              </label>
+              <div className="grid grid-cols-2 gap-3">
+                {(['accept', 'decline'] as const).map((val) => (
+                  <button
+                    key={val}
+                    type="button"
+                    onClick={() => setFormData((prev) => ({ ...prev, attendance: val }))}
+                    className={`py-3 rounded-xl border-2 font-medium capitalize transition-all duration-200
+                      ${formData.attendance === val
+                        ? 'bg-forest border-forest text-white'
+                        : 'bg-white border-sage text-forest-light hover:border-forest'}`}>
+                    {val === 'accept' ? '✓ Joyfully Accept' : '✗ Regretfully Decline'}
+                  </button>
+                ))}
+              </div>
+              {errors.attendance && <p className="text-rose-dark text-sm mt-1">{errors.attendance}</p>}
+            </div>
 
             {/* Submit Button */}
             <motion.button

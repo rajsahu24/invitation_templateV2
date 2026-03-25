@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 interface HeartQRScreenProps {
   onNext: () => void;
+  name?: string;
 }
 function DecorativeQRGrid() {
   const size = 11;
@@ -120,7 +121,7 @@ function FloatingHeart({
     </motion.div>);
 
 }
-export function HeartQRScreen({ onNext }: HeartQRScreenProps) {
+export function HeartQRScreen({ onNext, name = 'Rohan' }: HeartQRScreenProps) {
   useEffect(() => {
     const timer = setTimeout(onNext, 3500);
     return () => clearTimeout(timer);
@@ -202,7 +203,7 @@ export function HeartQRScreen({ onNext }: HeartQRScreenProps) {
             duration: 0.6
           }}>
           
-          Rohan&apos;s Birthday!
+          {name}&apos;s Birthday!
         </motion.h1>
 
         {/* Heart with QR */}

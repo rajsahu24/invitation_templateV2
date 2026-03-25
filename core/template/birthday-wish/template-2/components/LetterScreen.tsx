@@ -2,6 +2,8 @@ import React, { Children } from 'react';
 import { motion } from 'framer-motion';
 interface LetterScreenProps {
   onNext: () => void;
+  name?: string;
+  message?: string;
 }
 function BirthdayPresents() {
   return (
@@ -83,18 +85,18 @@ function BirthdayPresents() {
     </motion.svg>);
 
 }
-const letterLines = [
-'Dear Rohan,',
-'',
-'On this special day, I want you to know just how much you mean to me. You light up every room you walk into, and your kindness touches everyone around you.',
-'',
-'You are not just a year older — you are a year more wonderful, a year more wise, and a year more loved.',
-'',
-"Happy Birthday, Rohan. Here's to many more adventures together.",
-'',
-'With all my love ❤️'];
-
-export function LetterScreen({ onNext }: LetterScreenProps) {
+export function LetterScreen({ onNext, name = 'Rohan', message }: LetterScreenProps) {
+  const letterLines = message?.split('\n') ??    [
+    `Dear ${name},`,
+    '',
+     `On this special day, I want you to know just how much you mean to me. You light up every room you walk into, and your kindness touches everyone around you.`,
+    '',
+    `You are not just a year older — you are a year more wonderful, a year more wise, and a year more loved.`,
+    '',
+    `Happy Birthday, ${name}. Here's to many more adventures together.`,
+    '',
+    'With all my love ❤️',
+  ];
   const containerVariants = {
     hidden: {},
     visible: {

@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { StringLights } from './StringLights';
 interface CelebrationScreenProps {
   onNext: () => void;
+  name?: string;
 }
 function PastelCake({ candlesLit }: {candlesLit: boolean;}) {
   const candles = Array.from({
@@ -175,7 +176,7 @@ function PastelConfetti() {
     </div>);
 
 }
-export function CelebrationScreen({ onNext }: CelebrationScreenProps) {
+export function CelebrationScreen({ onNext, name = 'Rohan' }: CelebrationScreenProps) {
   const [candlesLit, setCandlesLit] = useState(true);
   const [blown, setBlown] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
@@ -232,7 +233,7 @@ export function CelebrationScreen({ onNext }: CelebrationScreenProps) {
         }}>
         
         <span className="text-gradient-rose-coral text-glow-rose">
-          Happy Birthday Rohan!
+          Happy Birthday {name}!
         </span>
       </motion.h1>
 
@@ -347,7 +348,7 @@ export function CelebrationScreen({ onNext }: CelebrationScreenProps) {
           onClick={onNext}
           aria-label="Wish Rohan Happy Birthday">
           
-            Wish Rohan Happy Birthday! 🎂
+            Wish {name} Happy Birthday! 🎂
           </motion.button>
         }
       </motion.div>

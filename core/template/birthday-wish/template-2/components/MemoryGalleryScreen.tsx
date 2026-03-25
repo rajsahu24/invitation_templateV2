@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 interface MemoryGalleryScreenProps {
   onNext: () => void;
+  images?: { image_url: string; type: string }[];
 }
 interface PolaroidProps {
   caption: string;
@@ -89,7 +90,19 @@ function Polaroid({
     </motion.div>);
 
 }
-export function MemoryGalleryScreen({ onNext }: MemoryGalleryScreenProps) {
+const defaultPolaroids = [
+  { caption: 'Best friends!', gradient: 'linear-gradient(135deg, #FFE4EC, #F472B6)', rotation: -8, delay: 0.6, xOffset: '-80px', yOffset: '-40px' },
+  { caption: 'Adventures!', gradient: 'linear-gradient(135deg, #E6FFF5, #6EE7B7)', rotation: 12, delay: 0.9, xOffset: '70px', yOffset: '-10px' },
+  { caption: 'Always there', gradient: 'linear-gradient(135deg, #F0E6FF, #A78BFA)', rotation: -4, delay: 1.2, xOffset: '-10px', yOffset: '60px' },
+];
+
+const offsets: { xOffset: string; yOffset: string; rotation: number }[] = [
+  { xOffset: '-80px', yOffset: '-40px', rotation: -8 },
+  { xOffset: '70px', yOffset: '-10px', rotation: 12 },
+  { xOffset: '-10px', yOffset: '60px', rotation: -4 },
+];
+
+export function MemoryGalleryScreen({ onNext, images = [] }: MemoryGalleryScreenProps) {
   return (
     <motion.div
       className="w-full h-full flex flex-col items-center relative overflow-hidden"
@@ -163,30 +176,36 @@ export function MemoryGalleryScreen({ onNext }: MemoryGalleryScreenProps) {
 
       {/* Gallery Area */}
       <div className="flex-1 w-full relative">
-        <Polaroid
-          caption="Best friends!"
-          gradient="linear-gradient(135deg, #FFE4EC, #F472B6)"
-          rotation={-8}
-          delay={0.6}
-          xOffset="-80px"
-          yOffset="-40px" />
-        
-        <Polaroid
-          caption="Adventures!"
-          gradient="linear-gradient(135deg, #E6FFF5, #6EE7B7)"
-          rotation={12}
-          delay={0.9}
-          xOffset="70px"
-          yOffset="-10px" />
-        
-        <Polaroid
-          caption="Always there"
-          gradient="linear-gradient(135deg, #F0E6FF, #A78BFA)"
-          rotation={-4}
-          delay={1.2}
-          xOffset="-10px"
-          yOffset="60px" />
-        
+        {images.length > 0
+          ? images.slice(0, 3).map((img, i) => {
+              const pos = offsets[i % offsets.length];
+              return (
+                <motion.div
+                  key={i}
+                  className="absolute bg-white p-3 pb-10 shadow-lg"
+                  style={{
+                    width: 160, height: 190,
+                    left: `calc(50% + ${pos.xOffset})`,
+                    top: `calc(50% + ${pos.yOffset})`,
+                    borderRadius: 4,
+                    border: '1px solid rgba(0,0,0,0.05)',
+                  }}
+                  initial={{ scale: 0, opacity: 0, rotate: pos.rotation - 20, x: '-50%', y: '-50%' }}
+                  animate={{ scale: 1, opacity: 1, rotate: pos.rotation, x: '-50%', y: '-50%' }}
+                  transition={{ type: 'spring', stiffness: 100, damping: 12, delay: 0.6 + i * 0.3 }}
+                  whileHover={{ scale: 1.05, zIndex: 20, boxShadow: '0 15px 30px rgba(0,0,0,0.1)' }}
+                >
+                  <img src={img.image_url} alt={img.type} className="w-full h-32 object-cover rounded-sm mb-3" />
+                  <p className="font-script text-xl text-center" style={{ color: '#4A1942' }}>
+                    {img.type === 'cover' ? 'Cover' : `Memory ${i + 1}`}
+                  </p>
+                </motion.div>
+              );
+            })
+          : defaultPolaroids.map((p, i) => (
+              <Polaroid key={i} {...p} />
+            ))
+        }
       </div>
 
       {/* Next Button */}

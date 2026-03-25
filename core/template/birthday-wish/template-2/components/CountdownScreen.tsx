@@ -2,6 +2,9 @@ import React, { useCallback, useEffect, useState, Children } from 'react';
 import { motion } from 'framer-motion';
 interface CountdownScreenProps {
   onNext: () => void;
+  name?: string;
+  targetDate?: string;
+  message?: string;
 }
 function BubbleField() {
   const bubbles = Array.from({
@@ -54,49 +57,36 @@ function CountdownDigit({ value, label }: {value: string;label: string;}) {
   return (
     <div className="flex flex-col items-center">
       <div
-        className="relative rounded-xl px-4 py-3 min-w-[70px] flex items-center justify-center bg-white"
+        className="relative rounded-xl px-2 py-2 sm:px-4 sm:py-3 min-w-[48px] sm:min-w-[70px] flex items-center justify-center bg-white"
         style={{
           border: '1px solid rgba(167, 139, 250, 0.3)',
           boxShadow: '0 4px 15px rgba(167, 139, 250, 0.1)'
         }}>
-        
         <motion.span
           key={value}
-          className="font-serif text-4xl md:text-5xl font-bold"
-          style={{
-            color: '#E91E7B' // Deep rose
-          }}
-          initial={{
-            y: -15,
-            opacity: 0
-          }}
-          animate={{
-            y: 0,
-            opacity: 1
-          }}
-          transition={{
-            duration: 0.3,
-            ease: 'easeOut'
-          }}>
-          
+          className="font-serif text-2xl sm:text-4xl md:text-5xl font-bold"
+          style={{ color: '#E91E7B' }}
+          initial={{ y: -15, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.3, ease: 'easeOut' }}>
           {value}
         </motion.span>
       </div>
       <span
-        className="font-sans text-xs tracking-[0.2em] mt-3 uppercase font-medium"
-        style={{
-          color: '#4A1942'
-        }} // Plum
-      >
+        className="font-sans text-[9px] sm:text-xs tracking-[0.15em] mt-2 uppercase font-medium"
+        style={{ color: '#4A1942' }}>
         {label}
       </span>
     </div>);
-
 }
-export function CountdownScreen({ onNext }: CountdownScreenProps) {
-  const [totalSeconds, setTotalSeconds] = useState(
-    22 * 86400 + 5 * 3600 + 3 * 60
-  );
+export function CountdownScreen({ onNext, name = 'Rohan', targetDate, message }: CountdownScreenProps) {
+  const [totalSeconds, setTotalSeconds] = useState(() => {
+    if (targetDate) {
+      const diff = Math.floor((new Date(targetDate).getTime() - Date.now()) / 1000);
+      return Math.max(diff, 0);
+    }
+    return 22 * 86400 + 5 * 3600 + 3 * 60;
+  });
   const tick = useCallback(() => {
     setTotalSeconds((prev) => prev > 0 ? prev - 1 : 0);
   }, []);
@@ -107,6 +97,7 @@ export function CountdownScreen({ onNext }: CountdownScreenProps) {
   const days = Math.floor(totalSeconds / 86400);
   const hours = Math.floor(totalSeconds % 86400 / 3600);
   const minutes = Math.floor(totalSeconds % 3600 / 60);
+  const seconds = totalSeconds % 60;
   const containerVariants = {
     hidden: {},
     visible: {
@@ -153,76 +144,57 @@ export function CountdownScreen({ onNext }: CountdownScreenProps) {
       <BubbleField />
 
       <motion.div
-        className="relative z-10 flex flex-col items-center text-center max-w-md"
+        className="relative z-10 flex flex-col items-center text-center w-full max-w-sm px-4"
         variants={containerVariants}
         initial="hidden"
         animate="visible">
-        
+
         {/* Subtitle */}
         <motion.p
-          className="font-serif text-lg md:text-xl italic"
-          style={{
-            color: '#4A1942'
-          }} // Plum
+          className="font-serif text-base sm:text-lg md:text-xl italic"
+          style={{ color: '#4A1942' }}
           variants={itemVariants}>
-          
           Someone crafted something magical for...
         </motion.p>
 
         {/* Name */}
         <motion.h1
-          className="font-script mt-4 mb-10"
-          style={{
-            fontSize: 'clamp(3rem, 10vw, 5rem)',
-            lineHeight: 1.2
-          }}
+          className="font-script mt-3 mb-6"
+          style={{ fontSize: 'clamp(2.2rem, 10vw, 5rem)', lineHeight: 1.2 }}
           variants={itemVariants}>
-          
-          <span className="text-gradient-rose-coral text-glow-rose">Rohan</span>
+          <span className="text-gradient-rose-coral text-glow-rose">{name}</span>
         </motion.h1>
 
         {/* Magic begins label */}
         <motion.p
-          className="font-serif text-xs md:text-sm tracking-[0.3em] uppercase mb-6 font-semibold"
-          style={{
-            color: '#4A1942'
-          }} // Plum
+          className="font-serif text-[10px] sm:text-xs md:text-sm tracking-[0.25em] uppercase mb-4 font-semibold"
+          style={{ color: '#4A1942' }}
           variants={itemVariants}>
-          
           The Magic Begins In
         </motion.p>
 
         {/* Countdown */}
         <motion.div
-          className="flex items-center gap-3 md:gap-5 mb-12"
+          className="flex items-center gap-1.5 sm:gap-3 md:gap-5 mb-8"
           variants={itemVariants}>
-          
           <CountdownDigit value={String(days).padStart(2, '0')} label="Days" />
-          <span
-            className="font-serif text-3xl md:text-4xl -mt-6 font-bold"
-            style={{
-              color: '#A78BFA'
-            }} // Lavender
-          >
-            :
-          </span>
-          <CountdownDigit
-            value={String(hours).padStart(2, '0')}
-            label="Hours" />
-          
-          <span
-            className="font-serif text-3xl md:text-4xl -mt-6 font-bold"
-            style={{
-              color: '#A78BFA'
-            }}>
-            
-            :
-          </span>
-          <CountdownDigit
-            value={String(minutes).padStart(2, '0')}
-            label="Minutes" />
-          
+          <span className="font-serif text-xl sm:text-3xl md:text-4xl -mt-5 font-bold" style={{ color: '#A78BFA' }}>:</span>
+          <CountdownDigit value={String(hours).padStart(2, '0')} label="Hours" />
+          <span className="font-serif text-xl sm:text-3xl md:text-4xl -mt-5 font-bold" style={{ color: '#A78BFA' }}>:</span>
+          <CountdownDigit value={String(minutes).padStart(2, '0')} label="Minutes" />
+          <span className="font-serif text-xl sm:text-3xl md:text-4xl -mt-5 font-bold" style={{ color: '#A78BFA' }}>:</span>
+          <CountdownDigit value={String(seconds).padStart(2, '0')} label="Seconds" />
         </motion.div>
+
+        {/* Tag line — only shown when targetDate is provided */}
+        {/* {targetDate && message && (
+          <motion.p
+            className="font-serif italic text-sm md:text-base mb-8 px-4"
+            style={{ color: '#9D174D' }}
+            variants={itemVariants}>
+            {message}
+          </motion.p>
+        )} */}
 
         {/* Peek button */}
         <motion.button
